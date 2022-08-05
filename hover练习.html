@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hover效果</title>
+    <link rel="stylesheet" href="./css/1.css">
+</head>
+
+<body>
+
+    <div class="login">
+        <h1>login</h1>
+        <form action="">
+            <input type="text" placeholder="账号">
+            <input type="text" placeholder="密码">
+            <button>登录</button>
+        </form>
+    </div>
+
+
+    <script>
+        //获取 login 元素
+        let login = document.querySelector('.login')
+
+        let span
+        let inTime, outTime
+        let isIn = true //默认开关 打开
+        let isOut = false
+
+        //鼠标进入事件
+        login.addEventListener('mouseenter', function (e) {
+
+            isOut = false //默认关闭
+            if (isIn) {
+                inTime = new Date().getTime()
+
+                //生成 span 元素
+                span = document.createElement('span')
+                login.appendChild(span)
+
+                // span 去使用 in 动画
+                span.style.animation = 'in .5s ease-out forwards'
+
+                // 计算 top 和 left 值
+                let top = e.clientY - e.target.offsetTop
+                let left = e.clientX - e.target.offsetLeft
+
+                span.style.top = top + 'px'
+                span.style.left = left + 'px'
+                isIn = false //当我们执行完程序后， 关闭
+                isOut = true //当我们执行完里面的程序，再打开
+            }
+
+
+        })
+
+
+        //鼠标离开事件
+        login.addEventListener('mouseleave', function (e) {
+
+            if (isOut) {
+                outTime = new Date().getTime()
+                let passTime = outTime - inTime
+
+                if (passTime < 500) {
+                    setTimeout(mouseleava, 500 - passTime)//已经经过的时间就不要了
+                } else {
+                    mouseleava()
+                }
+            }
+
+
+
+            function mouseleava() {
+                span.style.animation = 'out .5s ease-out forwards'
+
+                // 计算 top 和 left 值
+                let top = e.clientY - e.target.offsetTop
+                let left = e.clientX - e.target.offsetLeft
+
+                span.style.top = top + 'px'
+                span.style.left = left + 'px'
+
+                //注意：要给一个定时器，因为动画是有时间的
+                setTimeout(function () {
+                    login.removeChild(span)
+                    isIn = true //当我们执行完鼠标离开事件里的程序，才再次打开
+                }, 500)
+
+            }
+        })
+    </script>
+</body>
+
+</html>
